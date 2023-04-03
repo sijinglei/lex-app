@@ -20,7 +20,7 @@
 				</view>
 				<view class="qiuzhi" :class="{fixed:isFixed}">
 					<image class="lingdang" src="/static/image/icon/ico_qzyx.png" mode="aspectFill" />
-					求职意向
+				    	求职意向
 				</view>
 			</div>
 		</view>
