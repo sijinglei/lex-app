@@ -1,0 +1,24 @@
+.red {
+	color: red;
+}
+.arrow {
+	width: 92rpx;
+	height: 92rpx;
+	border-radius: 50%;
+	background-color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.arrow.success .uni-icons {
+	border-radius: 50%;
+	background-color: #07C160;
+}
+page {
+	--tc: #ffd200;
+	--theam-color: #ffd200;
+	--fcolor: #333333;
+	--ww: 0.872;
+	background-color: #efefef;
+}
+

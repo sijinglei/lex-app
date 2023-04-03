@@ -1,0 +1,1 @@
+<view class="no-data data-v-1424cde4" style="{{'height:'+(bodyHeight+'px')+';'}}"><image src="/static/image/no-data.png" class="data-v-1424cde4"></image><text class="data-v-1424cde4">{{title}}</text></view>
