@@ -9455,9 +9455,9 @@ internalMixin(Vue);
 
 /***/ }),
 /* 26 */
-/*!*******************************************************************!*\
-  !*** /Users/scott/Documents/workspace/uni-app/lex-pro/pages.json ***!
-  \*******************************************************************/
+/*!***********************************************************!*\
+  !*** /Users/scott/Documents/workspace/lex-pro/pages.json ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -9601,9 +9601,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 33 */
-/*!***********************************************************************!*\
-  !*** /Users/scott/Documents/workspace/uni-app/lex-pro/store/index.js ***!
-  \***********************************************************************/
+/*!***************************************************************!*\
+  !*** /Users/scott/Documents/workspace/lex-pro/store/index.js ***!
+  \***************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10885,9 +10885,9 @@ module.exports = index_cjs;
 
 /***/ }),
 /* 35 */
-/*!**********************************************************************!*\
-  !*** /Users/scott/Documents/workspace/uni-app/lex-pro/store/user.js ***!
-  \**********************************************************************/
+/*!**************************************************************!*\
+  !*** /Users/scott/Documents/workspace/lex-pro/store/user.js ***!
+  \**************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11318,9 +11318,9 @@ module.exports = _asyncToGenerator, module.exports.__esModule = true, module.exp
 
 /***/ }),
 /* 39 */
-/*!**********************************************************************!*\
-  !*** /Users/scott/Documents/workspace/uni-app/lex-pro/utils/http.js ***!
-  \**********************************************************************/
+/*!**************************************************************!*\
+  !*** /Users/scott/Documents/workspace/lex-pro/utils/http.js ***!
+  \**************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11386,9 +11386,9 @@ exports.default = _default;
 
 /***/ }),
 /* 40 */
-/*!*********************************************************************!*\
-  !*** /Users/scott/Documents/workspace/uni-app/lex-pro/utils/env.js ***!
-  \*********************************************************************/
+/*!*************************************************************!*\
+  !*** /Users/scott/Documents/workspace/lex-pro/utils/env.js ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11465,10 +11465,22 @@ exports.default = _default;
 /* 94 */,
 /* 95 */,
 /* 96 */,
-/* 97 */
-/*!************************************************************************************************************!*\
-  !*** /Users/scott/Documents/workspace/uni-app/lex-pro/uni_modules/uni-icons/components/uni-icons/icons.js ***!
-  \************************************************************************************************************/
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */
+/*!****************************************************************************************************!*\
+  !*** /Users/scott/Documents/workspace/lex-pro/uni_modules/uni-icons/components/uni-icons/icons.js ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

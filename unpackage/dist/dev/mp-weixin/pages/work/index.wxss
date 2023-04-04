@@ -141,9 +141,6 @@
 .work.service .top-bar.fixed .content {
   justify-content: flex-start;
 }
-.work.service .top-bar.fixed .search {
-  margin-right: 160rpx;
-}
 .work .main {
   padding: 20rpx 30rpx;
   position: relative;

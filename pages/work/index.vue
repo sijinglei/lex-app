@@ -20,7 +20,7 @@
 				</view>
 				<view class="qiuzhi" :class="{fixed:isFixed}">
 					<image class="lingdang" src="/static/image/icon/ico_qzyx.png" mode="aspectFill" />
-				    	求职意向
+					求职意向
 				</view>
 			</div>
 		</view>
@@ -214,9 +214,9 @@
 			onPageScroll(e) {
 				this.isFixed = e.scrollTop >= this.titleBarHeight
 			},
-			toSearch(){
+			toSearch() {
 				uni.navigateTo({
-					url:"/pages/search/search?type=1"
+					url: "/pages/search/search?type=1"
 				})
 			},
 			clickLogin() {

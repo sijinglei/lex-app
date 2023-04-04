@@ -93,7 +93,9 @@
 				})
 			},
 			onPageScroll(e) {
-				this.isFixed = e.scrollTop >= this.titleBarHeight
+			/*#ifdef MP*/
+			this.isFixed = e.scrollTop >= this.titleBarHeight
+			/*#endif*/
 			},
 			clickLogin() {
 				let postData = {
