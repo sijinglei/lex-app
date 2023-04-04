@@ -7,6 +7,8 @@ import Vue from 'vue'
 import noData from 'components/noData/noData.vue'
 Vue.component('no-data', noData)
 import store from 'store/index.js'
+import share from '@/utils/share'
+Vue.mixin(share)
 Vue.config.productionTip = false
 App.mpType = 'app'
 

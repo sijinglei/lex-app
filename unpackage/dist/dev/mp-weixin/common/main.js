@@ -17,16 +17,18 @@ __webpack_require__(/*! uni-pages */ 26);
 var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 27));
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 25));
 var _index = _interopRequireDefault(__webpack_require__(/*! store/index.js */ 33));
+var _share = _interopRequireDefault(__webpack_require__(/*! @/utils/share */ 41));
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 // @ts-ignore
 wx.__webpack_require_UNI_MP_PLUGIN__ = __webpack_require__;
 var noData = function noData() {
   __webpack_require__.e(/*! require.ensure | components/noData/noData */ "components/noData/noData").then((function () {
-    return resolve(__webpack_require__(/*! components/noData/noData.vue */ 99));
+    return resolve(__webpack_require__(/*! components/noData/noData.vue */ 100));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 _vue.default.component('no-data', noData);
+_vue.default.mixin(_share.default);
 _vue.default.config.productionTip = false;
 _App.default.mpType = 'app';
 _vue.default.prototype.showMsg = function (msg) {

@@ -76,29 +76,32 @@
 				//设置下方的Menus菜单，才能够让发送给朋友与分享到朋友圈两个按钮可以点击
 				menus: ["shareAppMessage", "shareTimeline"]
 			})
+			this.share.title='详情'
+			this.share.path='/pages/details/details'
+			this.share.imageUrl='/static/image/logo.jpg'
 			// #endif
 		},
-		onShareAppMessage(res) {
-			if (res.from === 'button') { // 来自页面内分享按钮
-				console.log(res.target)
-			}
-			return {
-				title: '招聘餐厅服务员多名', //分享的名称
-				path: '/pages/details/details?id=' + this.id,
-				imageUrl: '/static/image/logo.jpg',
-				mpId: env.appid //此处配置微信小程序的AppId
-			}
-		},
-		//分享到朋友圈
-		onShareTimeline(res) {
-			return {
-				title: '朋友圈，招聘餐厅服务员多名',
-				type: 0,
-				path: '/pages/details/details?id=' + this.id,
-				imageUrl: '/static/image/logo.jpg',
-				withShareTicket: '11111111111'
-			}
-		},
+		// onShareAppMessage(res) {
+		// 	if (res.from === 'button') { // 来自页面内分享按钮
+		// 		console.log(res.target)
+		// 	}
+		// 	return {
+		// 		title: '招聘餐厅服务员多名', //分享的名称
+		// 		path: '/pages/details/details?id=' + this.id,
+		// 		imageUrl: '/static/image/logo.jpg',
+		// 		mpId: env.appid //此处配置微信小程序的AppId
+		// 	}
+		// },
+		// //分享到朋友圈
+		// onShareTimeline(res) {
+		// 	return {
+		// 		title: '朋友圈，招聘餐厅服务员多名',
+		// 		type: 0,
+		// 		path: '/pages/details/details?id=' + this.id,
+		// 		imageUrl: '/static/image/logo.jpg',
+		// 		withShareTicket: '11111111111'
+		// 	}
+		// },
 		methods: {
 
 		}

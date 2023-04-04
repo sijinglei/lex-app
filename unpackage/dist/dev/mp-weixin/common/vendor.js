@@ -11432,7 +11432,54 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 41 */,
+/* 41 */
+/*!***************************************************************!*\
+  !*** /Users/scott/Documents/workspace/lex-pro/utils/share.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = {
+  data: function data() {
+    return {
+      share: {
+        title: '自定义分享标题',
+        path: '/pages/main-assess/assess',
+        imageUrl: '图片url',
+        withShareTicket: true // 允许分享朋友圈
+      }
+    };
+  },
+  onShareAppMessage: function onShareAppMessage(res) {
+    //发送给朋友
+    var that = this;
+    return {
+      title: this.share.title,
+      path: this.share.path,
+      imageUrl: this.share.imageUrl,
+      withShareTicket: this.share.withShareTicket
+    };
+  },
+  onShareTimeline: function onShareTimeline(res) {
+    //分享到朋友圈      
+    return {
+      title: this.share.title,
+      path: this.share.path,
+      imageUrl: this.share.imageUrl,
+      withShareTicket: this.share.withShareTicket
+    };
+  }
+};
+exports.default = _default;
+
+/***/ }),
 /* 42 */,
 /* 43 */,
 /* 44 */,
@@ -11502,7 +11549,8 @@ exports.default = _default;
 /* 108 */,
 /* 109 */,
 /* 110 */,
-/* 111 */
+/* 111 */,
+/* 112 */
 /*!****************************************************************************************************!*\
   !*** /Users/scott/Documents/workspace/lex-pro/uni_modules/uni-icons/components/uni-icons/icons.js ***!
   \****************************************************************************************************/
