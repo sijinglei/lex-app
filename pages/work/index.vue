@@ -1,14 +1,14 @@
 <template>
 	<view class="work">
 		<view class="head" :class="{fixed:isFixed}"
-			:style="{'padding-top':statusBarHeight+'px','height':(!isFixed?titleBarHeight:0)+'px'}">
+			:style="{'padding-top':statusBar+'px','height':(!isFixed?customBar:0)+'px'}">
 			<image class="logo" src="/static/image/logo.jpg" mode="aspectFill"></image>
 			<view class="title">
 				<text class="h1">乐享零工</text>
 				<text class="txt">随时随地，轻松工作！</text>
 			</view>
 		</view>
-		<view class="top-bar" :class="{fixed:isFixed}" :style="isFixed?'top:'+(statusBarHeight-2)+'px':''">
+		<view class="top-bar" :class="{fixed:isFixed}" :style="isFixed?'top:'+(statusBar-4)+'px':''">
 			<div class="content">
 				<view class="position">
 					南山区
@@ -25,7 +25,7 @@
 			</div>
 		</view>
 		<view class="main" @touchstart="touchStart" @touchend="touchEnd">
-			<view class="fillters" :class="{fixed:isFixed}" :style="isFixed?'top:'+(statusBarHeight+45)+'px':''">
+			<view class="fillters" :class="{fixed:isFixed}" :style="isFixed?'top:'+customBar+'px':''">
 				<view class="left">
 					<view :class="{active:d.id==currentId}" v-for="d in filters" @click.stop="tabClick(d)">{{d.text}}
 					</view>
@@ -33,7 +33,7 @@
 				</view>
 				<view class="right">
 					筛选
-					<van-icon name="arrow-down" />
+					<uni-icons type="bottom" size="20"></uni-icons>
 				</view>
 			</view>
 			<view class="list" :animation="animationData">
@@ -48,17 +48,18 @@
 <script>
 	import comItem from '@/components/comItem.vue'
 	import {
-		mapActions
+		mapActions,
+		mapState
 	} from 'vuex'
 	export default {
 		components: {
 			comItem
 		},
+		computed: {
+			...mapState(['statusBar', 'customBar'])
+		},
 		data() {
 			return {
-				statusBarHeight: 0,
-				titleBarHeight: 44,
-				wHeight: "",
 				keywords: "", //搜索关键字
 				currentId: 1,
 				filters: [{
@@ -92,15 +93,7 @@
 				timingFunction: 'ease',
 				duration: 120
 			})
-			uni.getSystemInfo({
-				success(res) {
-					let headerH = uni.getWindowInfo();
-					console.log('11111==', headerH)
-					that.statusBarHeight = res.statusBarHeight
-					that.wHeight = res.windowHeight
-					// that.titleBarHeight = headerH.bottom + headerH.top - res.statusBarHeight * 2 + 20
-				},
-			});
+
 			// 生生模拟数据
 			that.rowData = this.initData(20)
 			console.log(this.list)
@@ -212,7 +205,7 @@
 				}, 1000)
 			},
 			onPageScroll(e) {
-				this.isFixed = e.scrollTop >= this.titleBarHeight
+				this.isFixed = e.scrollTop >= this.customBar
 			},
 			toSearch() {
 				uni.navigateTo({

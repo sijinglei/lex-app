@@ -54,10 +54,9 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			font-size: 38rpx;
+			font-size: 32rpx;
 
 			.name {
-				font-family: Source Han Sans CN;
 				font-weight: bold;
 				display: flex;
 				align-items: center;
@@ -69,6 +68,7 @@
 		}
 
 		.infos {
+			font-size: 24rpx;
 			.txt {
 				margin: 4rpx 0;
 			}
@@ -77,7 +77,7 @@
 		.bot {
 			display: flex;
 			justify-content: flex-end;
-
+			margin-top: 20rpx;
 			button {
 				margin: 0;
 				width: 200rpx;

@@ -51,7 +51,11 @@
 			</view>
 		</view>
 		<view class="bot-btn">
-			<view class="share">分享</view>
+			<!-- #ifdef MP-WEIXIN -->
+			<view class="share">
+				<button class="shareBtn" open-type="share">分享</button>
+			</view>
+			<!-- #endif -->
 			<view class="contact">获取联系方式</view>
 		</view>
 	</view>
@@ -88,6 +92,7 @@
 			padding: 30rpx 20rpx;
 			border-radius: 20rpx;
 			margin: 30rpx 0;
+
 			.left {
 				image {
 					width: 80rpx;
@@ -114,14 +119,16 @@
 		}
 
 		.infos {
-			.t-box{
+			.t-box {
 				margin-bottom: 10rpx;
-				.label{
+
+				.label {
 					font-weight: bold;
 					font-size: 32rpx;
 					margin-bottom: 10rpx;
 				}
-				.txt{
+
+				.txt {
 					font-size: 24rpx;
 				}
 			}
@@ -136,23 +143,28 @@
 			position: absolute;
 			bottom: 120rpx;
 			width: calc(100% - 60rpx);
-			.content{
+
+			.content {
 				padding-right: 150rpx;
-				.t-tip{
+
+				.t-tip {
 					font-weight: bold;
 				}
-				.txt{
+
+				.txt {
 					line-height: 40rpx;
-					text{
+
+					text {
 						color: #FF6600;
 					}
 				}
 			}
-			.icon{
+
+			.icon {
 				width: 120rpx;
 				height: 120rpx;
-				
-				text{
+
+				text {
 					width: 100rpx;
 					height: 100rpx;
 					border-radius: 50%;
@@ -166,7 +178,8 @@
 				}
 			}
 		}
-		.bot-btn{
+
+		.bot-btn {
 			position: fixed;
 			width: 100%;
 			height: 100rpx;
@@ -176,18 +189,28 @@
 			font-weight: bold;
 			bottom: 0;
 			left: 0;
-			.share{
+
+			.share {
 				width: 200rpx;
-				background: #D6B208;
 				height: 100%;
-				display: flex;
-				align-items: center;
-				justify-content: center;
+				position: relative;
+					background: #D6B208;
+				.shareBtn{
+					background-color: transparent;
+					width: 100%;
+					height: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					border: none;
+					color: var(--fcolor);
+				}
 			}
-			.contact{
+
+			.contact {
 				flex: 1;
 				text-align: center;
-				
+
 			}
 		}
 	}

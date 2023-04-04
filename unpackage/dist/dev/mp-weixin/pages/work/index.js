@@ -179,11 +179,9 @@ var _default = {
   components: {
     comItem: comItem
   },
+  computed: _objectSpread({}, (0, _vuex.mapState)(['statusBar', 'customBar'])),
   data: function data() {
     return {
-      statusBarHeight: 0,
-      titleBarHeight: 44,
-      wHeight: "",
       keywords: "",
       //搜索关键字
       currentId: 1,
@@ -215,15 +213,7 @@ var _default = {
       timingFunction: 'ease',
       duration: 120
     });
-    uni.getSystemInfo({
-      success: function success(res) {
-        var headerH = uni.getWindowInfo();
-        console.log('11111==', headerH);
-        that.statusBarHeight = res.statusBarHeight;
-        that.wHeight = res.windowHeight;
-        // that.titleBarHeight = headerH.bottom + headerH.top - res.statusBarHeight * 2 + 20
-      }
-    });
+
     // 生生模拟数据
     that.rowData = this.initData(20);
     console.log(this.list);
@@ -330,7 +320,7 @@ var _default = {
       }, 1000);
     },
     onPageScroll: function onPageScroll(e) {
-      this.isFixed = e.scrollTop >= this.titleBarHeight;
+      this.isFixed = e.scrollTop >= this.customBar;
     },
     toSearch: function toSearch() {
       uni.navigateTo({

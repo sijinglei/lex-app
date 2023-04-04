@@ -127,7 +127,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(uni, wx) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -135,16 +135,46 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _default = {
   onLaunch: function onLaunch() {
-    console.log('App Launch');
+    this.getSysInfo();
   },
   onShow: function onShow() {
     console.log('App Show');
   },
   onHide: function onHide() {
     console.log('App Hide');
+  },
+  methods: {
+    getSysInfo: function getSysInfo() {
+      var _this = this;
+      uni.getSystemInfo({
+        success: function success(e) {
+          var statusBar = 0; // 状态拦高度
+          var customBar = 0; // 状态栏高度 + 导航栏高度
+
+          console.log('所有小程序平台');
+          statusBar = e.statusBarHeight;
+          customBar = e.statusBarHeight + 45;
+          if (e.platform === 'android') {
+            _this.$store.commit('SET_SYSTEM_IOSANDROID', false);
+            customBar = e.statusBarHeight + 50;
+          }
+          console.log('微信小程序');
+          statusBar = e.statusBarHeight;
+          // @ts-ignore
+          var custom = wx.getMenuButtonBoundingClientRect();
+          customBar = custom.bottom + custom.top - e.statusBarHeight;
+
+          // 缓存状态栏高度和导航栏高度
+          _this.$store.commit('SET_STATUS_BAR', statusBar);
+          _this.$store.commit('SET_CUSTOM_BAR', customBar);
+          _this.$store.commit('SET_SYSTEM_INFO', e);
+        }
+      });
+    }
   }
 };
 exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"]))
 
 /***/ }),
 

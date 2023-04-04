@@ -158,7 +158,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {
+/* WEBPACK VAR INJECTION */(function(wx, uni) {
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
@@ -178,11 +178,9 @@ var _default = {
   components: {
     comItem: comItem
   },
+  computed: _objectSpread({}, (0, _vuex.mapState)(['statusBar', 'customBar'])),
   data: function data() {
     return {
-      statusBarHeight: 0,
-      titleBarHeight: 44,
-      wHeight: "",
       keywords: "",
       //搜索关键字
       list: [],
@@ -191,19 +189,11 @@ var _default = {
     };
   },
   onLoad: function onLoad() {
-    var that = this;
-    uni.getSystemInfo({
-      success: function success(res) {
-        var headerH = uni.getWindowInfo();
-        var mb = uni.getMenuButtonBoundingClientRect();
-        that.menuWidth = mb.width;
-        that.statusBarHeight = res.statusBarHeight;
-        that.wHeight = res.windowHeight;
-        // that.titleBarHeight = headerH.bottom + headerH.top - res.statusBarHeight * 2 + 20
-      }
-    });
-
     this.list = this.initData(20);
+    console.log('微信小程序');
+    // @ts-ignore
+    var custom = wx.getMenuButtonBoundingClientRect();
+    this.menuWidth = custom.width + 10;
   },
   onShow: function onShow() {
     console.log('page Show');
@@ -233,7 +223,7 @@ var _default = {
       });
     },
     onPageScroll: function onPageScroll(e) {
-      this.isFixed = e.scrollTop >= this.titleBarHeight;
+      this.isFixed = e.scrollTop >= this.statusBar;
     },
     clickLogin: function clickLogin() {
       var postData = {
@@ -247,7 +237,7 @@ var _default = {
   })
 };
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 

@@ -1,14 +1,14 @@
 <template>
 	<view class="work service">
-		<view class="head" :class="{fixed:isFixed}"
-			:style="{'padding-top':statusBarHeight+'px','height':(!isFixed?titleBarHeight:0)+'px'}">
+		<view class="head" :class="{fixed:isFixed}" :style="{'padding-top':statusBar+'px'}">
 			<image class="logo" src="/static/image/logo.jpg" mode="aspectFill"></image>
 			<view class="title">
 				<text class="h1">乐享零工</text>
 				<text class="txt">随时随地，轻松工作！</text>
 			</view>
 		</view>
-	<view class="top-bar" :class="{fixed:isFixed}" :style="isFixed?'top:'+(statusBarHeight-2)+'px':''">
+
+		<view class="top-bar" :class="{fixed:isFixed}" :style="isFixed?'top:'+(statusBar-9)+'px':''">
 			<div class="content">
 				<view class="position service">
 					南山区
@@ -33,36 +33,33 @@
 <script>
 	import comItem from '@/components/comItem.vue'
 	import {
-		mapActions
+		mapActions,
+		mapState
 	} from 'vuex'
 	export default {
 		components: {
 			comItem
 		},
+		computed: {
+			...mapState(['statusBar', 'customBar'])
+		},
 		data() {
 			return {
-				statusBarHeight: 0,
-				titleBarHeight: 44,
-				wHeight: "",
 				keywords: "", //搜索关键字
 				list: [],
 				isFixed: false,
-				menuWidth:0
+				menuWidth: 0
 			}
 		},
 		onLoad() {
-			let that = this;
-			uni.getSystemInfo({
-				success(res) {
-					let headerH = uni.getWindowInfo();
-					let mb=uni.getMenuButtonBoundingClientRect()
-					that.menuWidth = mb.width
-					that.statusBarHeight = res.statusBarHeight
-					that.wHeight = res.windowHeight
-					// that.titleBarHeight = headerH.bottom + headerH.top - res.statusBarHeight * 2 + 20
-				},
-			});
 			this.list = this.initData(20)
+
+			// #ifdef MP-WEIXIN
+			console.log('微信小程序')
+			// @ts-ignore
+			const custom = wx.getMenuButtonBoundingClientRect()
+			this.menuWidth = custom.width + 10
+			// #endif
 		},
 		onShow() {
 			console.log('page Show')
@@ -87,15 +84,13 @@
 				})
 				return arr
 			},
-			toSearch(){
+			toSearch() {
 				uni.navigateTo({
-					url:"/pages/search/search?type=2"
+					url: "/pages/search/search?type=2"
 				})
 			},
 			onPageScroll(e) {
-			/*#ifdef MP*/
-			this.isFixed = e.scrollTop >= this.titleBarHeight
-			/*#endif*/
+				this.isFixed = e.scrollTop >= this.statusBar
 			},
 			clickLogin() {
 				let postData = {
@@ -112,4 +107,6 @@
 
 <style lang="scss">
 	@import '../work/index.scss';
+
+	.service {}
 </style>

@@ -11,6 +11,7 @@
 		flex-direction: column;
 		padding-left: 0;
 		align-items: flex-start;
+		box-sizing: border-box;
 		.info{
 			display: flex;
 			align-items: center;
@@ -48,13 +49,15 @@
 	}
 	}
   .top-bar {
-    // position: fixed;
+    height: 100rpx;
+    display: flex;
+    align-items: center;
     width: 100%;
     background-color: var(--theam-color);
     // z-index: 2;
     .content {
-      height: 132rpx;
-      width: calc(100% - 40rpx);
+	  height: 90rpx;
+      width: calc(100% - 36rpx);
       padding: 0 20rpx;
       display: flex;
       align-items: center;
@@ -63,9 +66,9 @@
 	&.fixed{
 		position: fixed;
 		z-index: 3;
-		.content{
-			height: 90rpx;
-		}
+		// .content{
+		// 	height: 88rpx;
+		// }
 	}
     .position {
       // width: 178rpx;
@@ -109,9 +112,11 @@
         display: flex;
         align-items: center;
       }
-	  &.fixed{
-		  opacity: 0;
-	  }
+	  /* #ifdef MP-WEIXIN */
+		  &.fixed{
+				  opacity: 0;
+		  }
+	  /* #endif */
     }
   }
   &.service{
@@ -135,7 +140,7 @@
       justify-content: space-between;
 	  &.fixed{
 		  position: fixed;
-		  width: calc(100% - 60rpx);
+		  width: calc(100% - 58rpx);
 		  left:30rpx;
 		  background-color: #EFEFEF;
 		  z-index: 2;

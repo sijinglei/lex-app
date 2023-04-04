@@ -40,10 +40,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 38rpx;
+  font-size: 32rpx;
 }
 .item-box .title .name.data-v-7cf2bec9 {
-  font-family: Source Han Sans CN;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -51,12 +50,16 @@
 .item-box .title .job-num.data-v-7cf2bec9 {
   color: var(--theam-color);
 }
+.item-box .infos.data-v-7cf2bec9 {
+  font-size: 24rpx;
+}
 .item-box .infos .txt.data-v-7cf2bec9 {
   margin: 4rpx 0;
 }
 .item-box .bot.data-v-7cf2bec9 {
   display: flex;
   justify-content: flex-end;
+  margin-top: 20rpx;
 }
 .item-box .bot button.data-v-7cf2bec9 {
   margin: 0;
