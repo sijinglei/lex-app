@@ -23,7 +23,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 wx.__webpack_require_UNI_MP_PLUGIN__ = __webpack_require__;
 var noData = function noData() {
   __webpack_require__.e(/*! require.ensure | components/noData/noData */ "components/noData/noData").then((function () {
-    return resolve(__webpack_require__(/*! components/noData/noData.vue */ 97));
+    return resolve(__webpack_require__(/*! components/noData/noData.vue */ 99));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 _vue.default.component('no-data', noData);

@@ -1,5 +1,24 @@
-.red {
-	color: red;
+.f-start{
+	display: flex;
+	align-items: center;
+}
+.flex-c{
+	display: flex;
+	flex-direction: column;
+}
+.between{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+/* 急招 */
+.hot {
+	background: #E93A3A;
+	font-size: 24rpx;
+	border-radius: 8rpx;
+	padding: 4rpx 8rpx;
+	color: #fff;
+	margin-left: 10rpx;
 }
 .arrow {
 	width: 92rpx;

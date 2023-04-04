@@ -48,14 +48,6 @@
   display: flex;
   align-items: center;
 }
-.item-box .title .name .hot.data-v-7cf2bec9 {
-  background: #E93A3A;
-  font-size: 24rpx;
-  border-radius: 8rpx;
-  padding: 4rpx 8rpx;
-  color: #fff;
-  margin-left: 10rpx;
-}
 .item-box .title .job-num.data-v-7cf2bec9 {
   color: var(--theam-color);
 }

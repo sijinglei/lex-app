@@ -61,15 +61,6 @@
 				font-weight: bold;
 				display: flex;
 				align-items: center;
-
-				.hot {
-					background: #E93A3A;
-					font-size: 24rpx;
-					border-radius: 8rpx;
-					padding: 4rpx 8rpx;
-					color: #fff;
-					margin-left: 10rpx;
-				}
 			}
 
 			.job-num {
