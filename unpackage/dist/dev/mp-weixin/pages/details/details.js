@@ -158,12 +158,14 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(wx) {
 
-
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _env = _interopRequireDefault(__webpack_require__(/*! @/utils/env.js */ 40));
 //
 //
 //
@@ -228,11 +230,45 @@ exports.default = void 0;
 //
 var _default = {
   data: function data() {
-    return {};
+    return {
+      id: 0
+    };
+  },
+  onLoad: function onLoad(options) {
+    this.id = options.id;
+    wx.showShareMenu({
+      withShareTicket: true,
+      //设置下方的Menus菜单，才能够让发送给朋友与分享到朋友圈两个按钮可以点击
+      menus: ["shareAppMessage", "shareTimeline"]
+    });
+  },
+  onShareAppMessage: function onShareAppMessage(res) {
+    if (res.from === 'button') {
+      // 来自页面内分享按钮
+      console.log(res.target);
+    }
+    return {
+      title: '招聘餐厅服务员多名',
+      //分享的名称
+      path: '/pages/details/details?id=' + this.id,
+      imageUrl: '/static/image/logo.jpg',
+      mpId: _env.default.appid //此处配置微信小程序的AppId
+    };
+  },
+  //分享到朋友圈
+  onShareTimeline: function onShareTimeline(res) {
+    return {
+      title: '朋友圈，招聘餐厅服务员多名',
+      type: 0,
+      path: '/pages/details/details?id=' + this.id,
+      imageUrl: '/static/image/logo.jpg',
+      withShareTicket: '11111111111'
+    };
   },
   methods: {}
 };
 exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"]))
 
 /***/ }),
 
