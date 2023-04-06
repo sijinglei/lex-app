@@ -1,0 +1,74 @@
+	.replease {
+		padding: 20rpx 30rpx;
+		background-color: #fff;
+
+		.form-cell {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 20rpx 0;
+			position: relative;
+
+			.uni-forms-item {
+				width: 100%;
+				align-items: center;
+				margin-bottom: 0;
+
+				.uni-forms-item__content {
+					display: flex;
+					align-items: center;
+					justify-content: flex-end;
+
+					input {
+						text-align: right;
+						padding: 0 10rpx;
+						width: 90%;
+						&.uni-numbox__value {
+							text-align: center;
+							width: 90rpx;
+						}
+					}
+
+					.uni-forms-item__error {
+						top: -50%;
+						right: 0;
+						left: auto;
+
+					}
+
+					.u-radio-group {
+						justify-content: flex-end;
+
+						.u-radio {
+							margin: 0 5rpx;
+						}
+					}
+				}
+
+			}
+
+			.u-switch {
+				margin-left: 10rpx;
+			}
+
+			.label {
+				flex: 1;
+				color: var(--fcolor);
+				font-size: 24rpx;
+
+				&.tip {
+					font-weight: bold;
+					font-size: 28rpx;
+				}
+			}
+			.item{
+				font-size: 24rpx;
+			}
+
+		}
+
+		button {
+			margin-top: 40rpx;
+			background-color: var(--tc);
+		}
+	}

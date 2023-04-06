@@ -1,7 +1,10 @@
 <script>
+	import env from './utils/env.js'
+	import http from './utils/http.js'
 	export default {
 		onLaunch: function() {
 			this.getSysInfo()
+			this.getCurrentLocation()
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -51,11 +54,47 @@
 
 					},
 				});
+			},
+			// 通过自带的方法获取到当前的经纬度，调用方法获取到地址获取到地址的中文信息
+			getCurrentLocation() {
+				let that = this //在uniapp中药定义一下this才能使用
+				let positionInfo = {}
+				// uni.chooseLocation({
+				// 	success:function(res){
+				// 		console.log(res)
+				// 	}
+				// })
+				// uni.getLocation({
+				// 	type: 'wgs84',
+				// 	success: function(res) {
+				// 		console.log(res)
+				// 		positionInfo.longitude = res.longitude;
+				// 		positionInfo.latitude = res.latitude;
+				// 		that.loAcquire(positionInfo.longitude, positionInfo.latitude)
+				// 	}
+				// });
+			},
+			loAcquire(longitude, latitude) {
+				let that = this;
+				uni.showLoading({
+					title: '获取位置中',
+					mask: true
+				});
+				let str = `output=jsonp&key=${env.mapKey}=${latitude},${longitude}` //记得在这里要输入密钥哦！
+				http.get('https://apis.map.qq.com/ws/geocoder/v1/?' + str, {}).then(res => {
+					console.log(res);
+					uni.hideLoading();
+					if (res.status == 0) {
+						// that.positionInfo.address = '当前位置是:' + res.result.address_component.street_number; //当前定位
+						that.$store.commit('SET_CURRENT_ADDRESS', res.result.address_component.street_number)
+					}
+				})
 			}
 		}
 	}
 </script>
-<style>
+<style lang="scss">
+	@import "@/uni_modules/uview-ui/index.scss";
 	@import '/static/css/common.css';
 
 	page {

@@ -56,11 +56,12 @@
 				<button class="shareBtn" open-type="share">分享</button>
 			</view>
 			<!-- #endif -->
-			<view class="contact">获取联系方式</view>
+			<view class="contact" @click="getConact">获取联系方式</view>
 		</view>
 	</view>
 </template>
 <script>
+	import {mapGetters} from 'vuex'
 	import env from '@/utils/env.js'
 	export default {
 		data() {
@@ -68,6 +69,11 @@
 				id: 0
 			}
 		},
+		computed:{
+			...mapGetters({
+				isLogin:'user/isLogin'
+			})
+		},	
 		onLoad(options) {
 			this.id = options.id
 			// #ifdef MP-WEIXIN
@@ -81,34 +87,24 @@
 			this.share.imageUrl='/static/image/logo.jpg'
 			// #endif
 		},
-		// onShareAppMessage(res) {
-		// 	if (res.from === 'button') { // 来自页面内分享按钮
-		// 		console.log(res.target)
-		// 	}
-		// 	return {
-		// 		title: '招聘餐厅服务员多名', //分享的名称
-		// 		path: '/pages/details/details?id=' + this.id,
-		// 		imageUrl: '/static/image/logo.jpg',
-		// 		mpId: env.appid //此处配置微信小程序的AppId
-		// 	}
-		// },
-		// //分享到朋友圈
-		// onShareTimeline(res) {
-		// 	return {
-		// 		title: '朋友圈，招聘餐厅服务员多名',
-		// 		type: 0,
-		// 		path: '/pages/details/details?id=' + this.id,
-		// 		imageUrl: '/static/image/logo.jpg',
-		// 		withShareTicket: '11111111111'
-		// 	}
-		// },
 		methods: {
-
+			getConact(){
+				if(this.isLogin){
+					
+				}else{
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+				}
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
+	page{
+		background-color: #fff;
+	}
 	.details {
 		padding: 30rpx;
 		color: var(--fcolor);

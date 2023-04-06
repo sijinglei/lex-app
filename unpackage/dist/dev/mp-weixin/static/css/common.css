@@ -1,16 +1,19 @@
-.f-start{
+.f-start {
 	display: flex;
 	align-items: center;
 }
-.flex-c{
+
+.flex-c {
 	display: flex;
 	flex-direction: column;
 }
-.between{
+
+.between {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
+
 /* 急招 */
 .hot {
 	background: #E93A3A;
@@ -34,4 +37,73 @@
 .arrow.success .uni-icons {
 	border-radius: 50%;
 	background-color: #07C160;
+}
+
+.line05::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 1px;
+	border-top: 1px solid #e1e1e1;
+	-webkit-transform-origin: 0 0;
+	transform-origin: 0 0;
+	-webkit-transform: scaleY(0.5);
+	transform: scaleY(0.5);
+}
+
+button[type="save"] {
+  margin-top: 68rpx;
+  background: #ffd200;
+  border-radius: 4px;
+  height: 88rpx !important;
+  line-height: 88rpx !important;
+  text-align: center;
+  padding: 0 !important;
+  font-weight: normal !important;
+  width: 100% !important;
+  font-size: 28rpx !important;
+  color: #000;
+  letter-spacing: 0.23rpx;
+}
+.form-main {
+	display: flex;
+	flex-direction: column;
+	padding: 0 40rpx;
+}
+
+.form-main .logo {
+	width: 144rpx;
+	height: 144rpx;
+	border-radius: 50%;
+	display: block;
+	margin: 60rpx auto 92rpx;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	position: relative;
+}
+
+.form-group input {
+	padding: 20rpx 0;
+	height: 40rpx;
+	border: none;
+	font-size: 28rpx;
+	color: #23292f;
+}
+
+.form-group .yzm {
+	font-size: 24rpx;
+	color: #e32416;
+	font-family: PingFangSC-Regular;
+}
+
+.form-group .imgcode {
+	width: 140rpx;
+	height: 70rpx;
 }

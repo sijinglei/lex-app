@@ -17,7 +17,9 @@
             "delay" : 0
         },
         /* 模块配置 */
-        "modules" : {},
+        "modules" : {
+            "OAuth" : {}
+        },
         /* 应用发布信息 */
         "distribute" : {
             /* android打包配置 */
@@ -46,7 +48,13 @@
             },
             /* SDK配置 */
             "sdkConfigs" : {
-                "ad" : {}
+                "ad" : {},
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wxe6e66f26705dd745",
+                        "UniversalLinks" : ""
+                    }
+                }
             }
         }
     },
@@ -62,7 +70,11 @@
             "postcss" : true
         },
         "usingComponents" : true,
-        "permission" : {}
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "开发需要"
+            }
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true
@@ -76,5 +88,14 @@
     "uniStatistics" : {
         "enable" : false
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : "NCQBZ-GWGRM-D5L6S-6W73R-JOCMV-OTBR7"
+                }
+            }
+        }
+    }
 }

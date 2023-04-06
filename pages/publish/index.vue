@@ -1,6 +1,6 @@
 <template>
 	<view class="publish">
-		<view class="list-box">
+		<view class="list-box" @click="doRelease()">
 			<view class="left">
 				<view class="title">发布招工</view>
 				<text>您周围有 2813 人等待工作</text>
@@ -9,7 +9,7 @@
 				<uni-icons type="arrow-right" color="#FFD200" size="40"></uni-icons>
 			</view>
 		</view>
-		<view class="list-box">
+		<view class="list-box" @click="doRelease(2)">
 			<view class="left">
 				<view class="title">发布便民服务</view>
 				<text>您周围有 2813 人等待工作</text>
@@ -54,6 +54,17 @@
 			return {
 
 			};
+		},
+		methods: {
+			doRelease(type = 1) {
+				let url = '/pages/release/release'
+				if (type == 2) {
+					url = '/pages/releaseService/releaseService'
+				}
+				uni.navigateTo({
+					url: url
+				})
+			}
 		}
 	}
 </script>

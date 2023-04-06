@@ -35,7 +35,7 @@ const $get = (url, data) => {
 }
 //post请求
 const $post = (url, data) => {
-	return $request(url, data, 'POST')
+	return $request(url, data, 'POST','application/x-www-form-urlencoded')
 }
 //给uniapp原生的requset赋值
 //记得要在mian.js中引用

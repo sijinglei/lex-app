@@ -11,7 +11,8 @@ const store = new Vuex.Store({
 		isIOS: true,
 		statusBar: 0,
 		customBar: 0,
-		systemInfo: null
+		systemInfo: null,
+		currentAddress: ''
 	},
 	mutations: {
 		SET_STATUS_BAR(state, data) {
@@ -28,6 +29,9 @@ const store = new Vuex.Store({
 		},
 		SET_SYSTEM_IOSANDROID(state, data) {
 			state.isIOS = data
+		},
+		SET_CURRENT_ADDRESS(state, data) {
+			state.currentAddress = data
 		}
 	}
 })

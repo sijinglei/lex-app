@@ -10,8 +10,8 @@
 		</view>
 		<view class="top-bar" :class="{fixed:isFixed}" :style="isFixed?'top:'+(statusBar-4)+'px':''">
 			<div class="content">
-				<view class="position">
-					南山区
+				<view class="position" @click="toAddress()">
+					{{currentAddress}}
 					<uni-icons type="bottom" size="20"></uni-icons>
 				</view>
 				<view class="search" @click="toSearch">
@@ -56,7 +56,7 @@
 			comItem
 		},
 		computed: {
-			...mapState(['statusBar', 'customBar'])
+			...mapState(['statusBar', 'customBar', 'currentAddress'])
 		},
 		data() {
 			return {
@@ -210,6 +210,11 @@
 			toSearch() {
 				uni.navigateTo({
 					url: "/pages/search/search?type=1"
+				})
+			},
+			toAddress() {
+				uni.navigateTo({
+					url:'/pages/chooseAddress/chooseAddress?address='+'南山区'
 				})
 			},
 			clickLogin() {
