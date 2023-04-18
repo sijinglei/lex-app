@@ -9,31 +9,30 @@
 					<view class="form-cell line05">
 						<input v-model="formData.title" placeholder="检测漏水与维修" />
 					</view>
-
 					<view class="form-cell">
 						<view class="label tip">服务内容</view>
 					</view>
 					<view class="form-cell line05">
-						<uni-easyinput type="textarea" v-model="formData.salaryDesc" placeholder="请填写服务内容" />
-
+						<uni-easyinput type="textarea" v-model="formData.content" placeholder="请填写服务内容" />
 					</view>
 					<view class="form-cell">
 						<view class="label tip">服务时间</view>
 					</view>
 					<view class="form-cell line05">
-						<input v-model="formData.jobTime" placeholder="请填写服务时间" />
+						<input v-model="formData.serviceTime" placeholder="请填写服务时间" />
 					</view>
 					<view class="form-cell">
 						<view class="label tip">服务费用说明</view>
 					</view>
 					<view class="form-cell line05">
-						<input v-model="formData.jobTime" placeholder="请填写服务费用说明" />
+						<uni-easyinput type="textarea" v-model="formData.expense" placeholder="请填写服务费用说明" />
+
 					</view>
 					<view class="form-cell">
 						<view class="label tip">服务区域</view>
 					</view>
 					<view class="form-cell line05">
-						<uni-forms-item ref="input" name="address" label="选择区域">
+						<uni-forms-item ref="input" name="area" label="选择区域">
 							<view>请选择位置</view>
 							<uni-icons type="forward" size="20" color="#333"></uni-icons>
 						</uni-forms-item>
@@ -42,40 +41,31 @@
 						<view class="label tip">联系地址</view>
 					</view>
 					<view class="form-cell line05">
-						<uni-forms-item ref="input" name="address" label="选择定位">
-							<view>请选择位置</view>
+						<uni-forms-item ref="input" name="address" label="定位位置">
+							<view @click="chooseAddr">{{currentChooseAddr||'请选择位置'}}</view>
 							<uni-icons type="forward" size="20" color="#333"></uni-icons>
 						</uni-forms-item>
 					</view>
 					<view class="form-cell line05">
-						<uni-forms-item ref="input" name="detailAddress" label="详细地址">
-							<!-- input 的校验时机 -->
-							<input v-model="formData.detailAddress" placeholder="请填写详细地址(门牌号等)" />
+						<uni-forms-item ref="input" name="address" label="详细地址">
+							<input v-model="formData.address" placeholder="请填写详细地址(门牌号等)" />
 						</uni-forms-item>
 					</view>
 					<view class="form-cell line05">
 						<uni-forms-item ref="input" name="mobile" label="联系电话">
-							<!-- input 的校验时机 -->
 							<input v-model="formData.mobile" placeholder="13599999999" />
 						</uni-forms-item>
 					</view>
 					<view class="form-cell line05">
-						<uni-forms-item ref="input" name="wechat" label="联系微信">
-							<!-- input 的校验时机 -->
-							<input v-model="formData.wechat" placeholder="13599999999" />
+						<uni-forms-item ref="input" name="weixin" label="联系微信">
+							<input v-model="formData.weixin" placeholder="13599999999" />
 						</uni-forms-item>
 					</view>
-					<!-- 				<uni-forms-item name="age" label="年龄">
-						<uni-easyinput v-model="formData.age" type="text" placeholder="请输入年龄" />
-					</uni-forms-item>
-					<uni-forms-item ref="input" name="email" label="邮箱">
-						<input v-model="formData.email" placeholder="请输入邮箱" />
-					</uni-forms-item> -->
 					<button class="button" @click="submit">确认并发布</button>
 				</uni-forms>
+				<u-toast ref="uToast"></u-toast>
 			</view>
 		</template>
-
 
 	</view>
 </template>
@@ -85,52 +75,17 @@
 		data() {
 			return {
 				formData: {
-					isJobHot: true,
-					jobType: 1,
-					age: 0,
-					sex: 0,
-					jobPerson: 1,
-					settleMethod: 1,
+					id: '',
 					title: '',
-					jobContent: '',
-					jobTime: '',
-					address: '',
-					detailAddress: '',
-					salaryDesc: '',
-					benefitDesc: '',
+					content: '',
+					serviceTime: '',
 					mobile: '',
-					wechat: '',
-					remark: '' // 其他
+					weixin: '',
+					address: '',
+					longitude: '', // 经度
+					latitude: '' //纬度
 				},
-				rules: {
-					age: {
-						rules: [{
-							required: true,
-							errorMessage: '请输入年龄',
-						}, {
-							validateFunction: (rule, value, data, callback) => {
-								// 异步需要返回 Promise 对象
-								return new Promise((resolve, reject) => {
-									setTimeout(() => {
-										if (value > 10) {
-											// 通过返回 resolve
-											resolve()
-										} else {
-											// 不通过返回 reject(new Error('错误信息'))
-											reject(new Error('年龄必须大于十岁'))
-										}
-									}, 2000)
-								})
-							}
-						}]
-					},
-					email: {
-						rules: [{
-							format: 'email',
-							errorMessage: '请输入正确的邮箱地址',
-						}]
-					}
-				}
+				currentChooseAddr: ''
 			};
 		},
 		onReady() {
@@ -144,19 +99,76 @@
 			change(e) {
 				console.log('change', e);
 			},
+			chooseAddr() {
+				let that = this
+				uni.chooseLocation({
+					success: function(res) {
+						console.log('位置名称：' + res.name);
+						console.log('详细地址：' + res.address);
+						console.log('纬度：' + res.latitude);
+						console.log('经度：' + res.longitude);
+						that.currentChooseAddr = res.address
+						that.formData.longitude = res.longitude
+						that.formData.latitude = res.latitude
+						that.formData.address = res.name
+					}
+				});
+			},
+			showToast(message) {
+				this.$refs.uToast.show({
+					message
+				})
+			},
+			validData() {
+				if (this.formData.title == '') {
+					this.showToast('标题不能为空')
+					return false
+				}
+				if (this.formData.content == '') {
+					this.showToast('请填写服务内容')
+					return false
+				}
+				if (this.formData.serviceTime == '') {
+					this.showToast('请填写服务时间')
+					return false
+				}
+				if (this.formData.longitude == '' || this.formData.latitude == '') {
+					this.showToast('请选择服务位置')
+					return false
+				}
+				if (this.formData.address == '') {
+					this.showToast('请填写具体位置')
+					return false
+				}
+				if (this.formData.mobile == '') {
+					this.showToast('手机号码不能为空')
+					return false
+				}
+
+				if (!/^1[3456789]\d{9}$/.test(this.formData.mobile)) {
+					this.showToast('手机号码格式错误');
+					return false;
+				}
+				return true
+			},
 			/**
 			 * 表单提交
 			 * @param {Object} event
 			 */
 			submit() {
+				if (!this.validData()) return
+
 				uni.showLoading()
-				this.$refs.form.validate().then(res => {
-					uni.hideLoading()
-					console.log('表单数据信息：', res);
-				}).catch(err => {
-					uni.hideLoading()
-					console.log('表单错误信息：', err);
+				this.$store.dispatch('user/addService', this.formData).then(res => {
+					console.log(res)
+					if (res.code == 0) {
+						this.showToast(this.formData.id ? '发布成功！' : '更新成功');
+						uni.navigateTo({
+							url:'/pages/success/success'
+						})
+					}
 				})
+				uni.hideLoading()
 			}
 		}
 	}

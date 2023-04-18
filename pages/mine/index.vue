@@ -2,9 +2,10 @@
 	<view class="work">
 		<view class="head mine" :style="{'padding-top':statusBarHeight+'px'}">
 			<view class="info">
-				<image class="logo" src="/static/image/logo.jpg" mode="aspectFill"></image>
+				<image v-if="wxuserInfo&&wxuserInfo.avatarUrl" class="logo" :src="wxuserInfo.avatarUrl" mode="aspectFill"></image>
+				<image v-else class="logo" src="/static/image/logo.jpg" mode="aspectFill"></image>
 				<view class="title">
-					<text class="h1">我的昵称</text>
+					<text class="h1">{{(wxuserInfo&&wxuserInfo.nickName)||'--'}}</text>
 					<text class="txt">176****6879</text>
 				</view>
 			</view>
@@ -50,7 +51,7 @@
 					</div>
 				</view>
 			</div>
-			<button>退出登录</button>
+			<button @click="logout()">退出登录</button>
 			<view class="copy">
 				<view>客服电话：17665256666 工作时间：9:30-18:30</view>
 				<view>人力资源许可证｜营业执照</view>
@@ -76,6 +77,11 @@
 				keywords: "", //搜索关键字
 			}
 		},
+		computed:{
+				wxuserInfo(){
+					return this.$store.state.wxuserInfo
+				}
+		},
 		onLoad() {
 			let that = this;
 			uni.getSystemInfo({
@@ -97,13 +103,10 @@
 			...mapActions({
 				login: 'user/login'
 			}),
-			clickLogin() {
-				let postData = {
-					username: '111',
-					password: '22222'
-				}
-				this.login(postData).then(res => {
-					console.log('登录成功', res)
+			logout() {
+				uni.clearStorageSync()
+				uni.navigateTo({
+					url:'/pages/login/login'
 				})
 			}
 		}
@@ -112,7 +115,6 @@
 
 <style lang="scss">
 	@import '../work/index.scss';
-
 	.tabs {
 		height: 100rpx;
 		display: flex;

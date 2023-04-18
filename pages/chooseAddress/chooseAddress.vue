@@ -8,7 +8,7 @@
 				<view class="left">
 					<scroll-view :scroll-y="true" :style="{'height':(scrollHeight - 50)+'px'}"
 						:scroll-top="scrollTopLeft">
-						<view v-for="(item,index) in list" @click="toScrollView(index,item.key)">
+						<view v-for="(item,index) in provinces" @click="toScrollView(index,item.key)">
 							<view class="left-item" :class="{'left-active':selectedSub==index}">
 								<text>{{item.name}}</text>
 							</view>
@@ -19,7 +19,7 @@
 					<!-- <van-search background="#F2F2F2" value="{{ keyWord }}" placeholder="请输入搜索关键词" /> -->
 					<scroll-view :scroll-y="true" :style="{'height':(scrollHeight - 50)+'px'}"
 						:scroll-into-view="toView" scroll-top="0" @scroll="scrollTo" scroll-with-animation>
-						<view v-for="(item,idx) in listCity" :id="'position'+idx">
+						<view v-for="(item,idx) in citys" :id="'position'+idx">
 							<view class="right-item">
 								<view class="right-classify-title">{{item.name}}</view>
 								<view class="list">
@@ -41,19 +41,22 @@
 
 <script>
 	let scrollDdirection = 0;
-	import areaList from '@/utils/area.js'
+	// import areaList from '@/utils/area.js'
+	import {
+		mapActions
+	} from 'vuex'
 	export default {
 		data() {
 			return {
 				selectedSub: 0, // 选中的分类
-				list: [],
-				listCity: [], // 市
-				listCountry: [], //县
+				// list: [],
+				// listCity: [], // 市
+				// listCountry: [], //县
 				toView: 'position0', // 滚动视图跳转的位置
 				scrollTopLeft: 0, //  左边滚动位置随着右边分类而滚动
-				provinces: areaList.province_list,
-				citys: areaList.city_list,
-				countys: areaList.county_list,
+				provinces: [], //areaList.province_list,
+				citys: [], //areaList.city_list,
+				countys: [], // areaList.county_list,
 				currentAddress: ''
 			}
 		},
@@ -71,9 +74,24 @@
 			uni.setNavigationBarTitle({
 				title: '位置选择'
 			});
-			this.initData()
+			// this.initData()
+			this.getData()
 		},
 		methods: {
+			...mapActions('com', {
+				getProvinces: 'getProvinces',
+				getCitys: 'getCitys',
+				getAreas: 'getAreas',
+			}),
+			async getData() {
+				let resProvinces = await this.getProvinces()
+				this.provinces = resProvinces.items
+				let resCitys = await this.getCitys({
+					provinceId: this.provinces[0].id
+				})
+				this.citys = resCitys.items
+
+			},
 			initData(address = '') {
 				let _provinces = Object.keys(this.provinces).map(key => {
 					return {
@@ -194,7 +212,7 @@
 			itemHandleClick(key, name) {
 				console.log('选中位置', key)
 				this.currentAddress = name
-				this.$store.commit('SET_CURRENT_ADDRESS',name)
+				this.$store.commit('SET_CURRENT_ADDRESS', name)
 				uni.navigateBack()
 			}
 		}

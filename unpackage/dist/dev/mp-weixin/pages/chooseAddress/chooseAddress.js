@@ -142,7 +142,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _area = _interopRequireDefault(__webpack_require__(/*! @/utils/area.js */ 222));
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 38));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 40));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ 11));
+var _vuex = __webpack_require__(/*! vuex */ 36);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 //
 //
 //
@@ -186,23 +191,25 @@ var _area = _interopRequireDefault(__webpack_require__(/*! @/utils/area.js */ 22
 //
 
 var scrollDdirection = 0;
+// import areaList from '@/utils/area.js'
 var _default = {
   data: function data() {
     return {
       selectedSub: 0,
       // 选中的分类
-      list: [],
-      listCity: [],
-      // 市
-      listCountry: [],
-      //县
+      // list: [],
+      // listCity: [], // 市
+      // listCountry: [], //县
       toView: 'position0',
       // 滚动视图跳转的位置
       scrollTopLeft: 0,
       //  左边滚动位置随着右边分类而滚动
-      provinces: _area.default.province_list,
-      citys: _area.default.city_list,
-      countys: _area.default.county_list,
+      provinces: [],
+      //areaList.province_list,
+      citys: [],
+      //areaList.city_list,
+      countys: [],
+      // areaList.county_list,
       currentAddress: ''
     };
   },
@@ -220,16 +227,49 @@ var _default = {
     uni.setNavigationBarTitle({
       title: '位置选择'
     });
-    this.initData();
+    // this.initData()
+    this.getData();
   },
-  methods: {
-    initData: function initData() {
+  methods: _objectSpread(_objectSpread({}, (0, _vuex.mapActions)('com', {
+    getProvinces: 'getProvinces',
+    getCitys: 'getCitys',
+    getAreas: 'getAreas'
+  })), {}, {
+    getData: function getData() {
       var _this = this;
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+        var resProvinces, resCitys;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _this.getProvinces();
+              case 2:
+                resProvinces = _context.sent;
+                _this.provinces = resProvinces.items;
+                _context.next = 6;
+                return _this.getCitys({
+                  provinceId: _this.provinces[0].id
+                });
+              case 6:
+                resCitys = _context.sent;
+                _this.citys = resCitys.items;
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    initData: function initData() {
+      var _this2 = this;
       var address = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
       var _provinces = Object.keys(this.provinces).map(function (key) {
         return {
           key: key,
-          name: _this.provinces[key]
+          name: _this2.provinces[key]
         };
       });
       this.list = _provinces;
@@ -272,21 +312,21 @@ var _default = {
      * 获取右边每个分类的头部偏移量
      */
     lisenerScroll: function lisenerScroll() {
-      var _this2 = this;
+      var _this3 = this;
       // 获取各分类容器距离顶部的距离
       new Promise(function (resolve) {
         var query = uni.createSelectorQuery();
-        for (var i in _this2.list) {
+        for (var i in _this3.list) {
           query.select("#position".concat(i)).boundingClientRect();
         }
         query.exec(function (res) {
           resolve(res);
         });
       }).then(function (res) {
-        _this2.list.forEach(function (item, index) {
+        _this3.list.forEach(function (item, index) {
           item.offsetTop = res[index].top;
         });
-        _this2.scrollInfo = res;
+        _this3.scrollInfo = res;
         // this.list = this.list
       });
     },
@@ -306,30 +346,30 @@ var _default = {
       this.scrollTopLeft = _left;
     },
     refreshe: function refreshe(key) {
-      var _this3 = this;
+      var _this4 = this;
       var pKey = key.substring(0, 2);
       var cityKeys = Object.keys(this.citys).filter(function (d) {
         return d.startsWith(pKey);
       });
       this.listCity = cityKeys.map(function (d) {
         var cKey = d.substring(0, 4);
-        var countryKeys = Object.keys(_this3.countys).filter(function (d) {
+        var countryKeys = Object.keys(_this4.countys).filter(function (d) {
           return d.startsWith(cKey);
         });
         var _country = countryKeys.map(function (key) {
           return {
             key: key,
-            name: _this3.countys[key]
+            name: _this4.countys[key]
           };
         });
         return {
           key: d,
-          name: _this3.citys[d],
+          name: _this4.citys[d],
           children: _country
         };
       });
       setTimeout(function () {
-        _this3.toView = 'position0';
+        _this4.toView = 'position0';
       }, 100);
     },
     itemHandleClick: function itemHandleClick(key, name) {
@@ -338,7 +378,7 @@ var _default = {
       this.$store.commit('SET_CURRENT_ADDRESS', name);
       uni.navigateBack();
     }
-  }
+  })
 };
 exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))

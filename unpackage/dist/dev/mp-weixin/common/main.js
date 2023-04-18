@@ -25,7 +25,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 wx.__webpack_require_UNI_MP_PLUGIN__ = __webpack_require__;
 var noData = function noData() {
   __webpack_require__.e(/*! require.ensure | components/noData/noData */ "components/noData/noData").then((function () {
-    return resolve(__webpack_require__(/*! components/noData/noData.vue */ 241));
+    return resolve(__webpack_require__(/*! components/noData/noData.vue */ 257));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 _vue.default.component('no-data', noData);
@@ -159,12 +159,31 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 38));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 40));
 var _env = _interopRequireDefault(__webpack_require__(/*! ./utils/env.js */ 30));
 var _http = _interopRequireDefault(__webpack_require__(/*! ./utils/http.js */ 31));
+var _utils = _interopRequireDefault(__webpack_require__(/*! ./utils/utils.js */ 414));
+var _qqmapWxJssdkMin = _interopRequireDefault(__webpack_require__(/*! ./common/qqmap-wx-jssdk.min.js */ 418));
 var _default = {
+  data: function data() {
+    return {
+      isIos: false,
+      hasLocation: false,
+      location: {}
+    };
+  },
   onLaunch: function onLaunch() {
     this.getSysInfo();
     this.getCurrentLocation();
+    var token = uni.getStorageSync('token') || '';
+    var userInfo = uni.getStorageSync('user') || null;
+    console.log('token', token, userInfo);
+    var isLogin = token && userInfo;
+    console.log('isLogin', isLogin);
+    if (!isLogin) {
+      this.login();
+    }
   },
   onShow: function onShow() {
     console.log('App Show');
@@ -197,41 +216,168 @@ var _default = {
           _this.$store.commit('SET_STATUS_BAR', statusBar);
           _this.$store.commit('SET_CUSTOM_BAR', customBar);
           _this.$store.commit('SET_SYSTEM_INFO', e);
+          var locationEnabled = e.locationEnabled; //判断手机定位服务是否开启
+          var locationAuthorized = e.locationAuthorized; //判断定位服务是否允许微信授权
+          if (!locationEnabled || !locationAuthorized) {
+            //手机定位服务（GPS）未授权
+            uni.showToast({
+              title: "请打开手机GPS",
+              icon: "none"
+            });
+            return;
+          }
         }
       });
     },
     // 通过自带的方法获取到当前的经纬度，调用方法获取到地址获取到地址的中文信息
     getCurrentLocation: function getCurrentLocation() {
-      var that = this; //在uniapp中药定义一下this才能使用
-      var positionInfo = {};
-      // uni.chooseLocation({
-      // 	success:function(res){
-      // 		console.log(res)
-      // 	}
-      // })
-      // uni.getLocation({
-      // 	type: 'wgs84',
-      // 	success: function(res) {
-      // 		console.log(res)
-      // 		positionInfo.longitude = res.longitude;
-      // 		positionInfo.latitude = res.latitude;
-      // 		that.loAcquire(positionInfo.longitude, positionInfo.latitude)
-      // 	}
-      // });
+      var _this2 = this;
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+        var position;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _this2.getLocationInfo();
+              case 2:
+                position = _context.sent;
+                _this2.$store.commit('SET_LONG_LAT', {
+                  longitude: position.longitude,
+                  latitude: position.latitude
+                });
+                _this2.$store.commit('SET_CURRENT_ADDRESS', position.area);
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     },
-    loAcquire: function loAcquire(longitude, latitude) {
+    //获取位置信息
+    getLocationInfo: function getLocationInfo() {
+      var _this3 = this;
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
+        var that, sys, isIos;
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                that = _this3;
+                sys = uni.getSystemInfoSync();
+                isIos = sys.platform == 'ios';
+                return _context2.abrupt("return", new Promise(function (resolve) {
+                  //位置信息默认数据
+                  var location = {
+                    longitude: 0,
+                    latitude: 0,
+                    province: "",
+                    city: "",
+                    area: "",
+                    street: "",
+                    address: ""
+                  };
+                  uni.getLocation({
+                    type: 'wgs84',
+                    //"gcj02",
+                    success: function success(res) {
+                      location.longitude = res.longitude;
+                      location.latitude = res.latitude;
+                      if (isIos) {
+                        location.longitude = res.longitude.toFixed(6);
+                        location.latitude = res.latitude.toFixed(6);
+                      }
+
+                      // 腾讯地图Api
+                      var qqmapsdk = new _qqmapWxJssdkMin.default({
+                        key: _env.default.mapKey //这里填写自己申请的key
+                      });
+
+                      qqmapsdk.reverseGeocoder({
+                        location: location,
+                        success: function success(response) {
+                          var info = response.result;
+                          console.log(info);
+                          location.province = info.address_component.province;
+                          location.city = info.address_component.city;
+                          location.area = info.address_component.district;
+                          location.street = info.address_component.street;
+                          location.address = info.address;
+                          resolve(location);
+                        }
+                      });
+                    },
+                    fail: function fail(err) {
+                      console.log(err);
+                      resolve(location);
+                    }
+                  });
+                }));
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    // getAreaCode通过经纬度(wgs84)坐标获取区域码
+    getAreaCode: function getAreaCode(latitude, longitude) {
       var that = this;
-      uni.showLoading({
-        title: '获取位置中',
-        mask: true
+      that.$u.api.getAreaCode({
+        latitude: latitude,
+        longitude: longitude
+      }).then(function (res) {
+        if (res.code == 200) {
+          console.log("通过经纬度坐标获取区域码:", res);
+          // console.log(res, 'areaCode');
+          that.bindList.areaCode = res.data.areaCode;
+          that.bindList.specificAddress = res.data.detailLocation;
+          that.bindList.address = res.data.areaLocation;
+        } else {
+          uni.showToast({
+            title: res.msg,
+            icon: "none"
+          });
+        }
+      }).catch(function (err) {
+        that.loadState = "加载失败err";
+        console.log("getDevList_err:", err); //--------------------
       });
-      var str = "output=jsonp&key=".concat(_env.default.mapKey, "=").concat(latitude, ",").concat(longitude); //记得在这里要输入密钥哦！
-      _http.default.get('https://apis.map.qq.com/ws/geocoder/v1/?' + str, {}).then(function (res) {
-        console.log(res);
-        uni.hideLoading();
-        if (res.status == 0) {
-          // that.positionInfo.address = '当前位置是:' + res.result.address_component.street_number; //当前定位
-          that.$store.commit('SET_CURRENT_ADDRESS', res.result.address_component.street_number);
+    },
+    login: function login() {
+      var that = this;
+      console.log('login');
+      uni.login({
+        provider: 'weixin',
+        success: function success(res) {
+          var openCode = res.code;
+          uni.getUserInfo({
+            provider: 'weixin',
+            success: function success(user) {
+              var userInfo = user.userInfo;
+              console.log(userInfo);
+              that.$store.commit('SET_WXUSER_INFO', userInfo);
+              that.$store.dispatch('user/loginWx', {
+                code: openCode
+              }).then(function (logRes) {
+                console.log('是否登录', logRes);
+                if (logRes.code == 100) {
+                  uni.navigateTo({
+                    url: '/pages/login/login'
+                  });
+                } else {
+                  uni.navigateTo({
+                    url: '/pages/work/index'
+                  });
+                }
+              });
+            }
+          });
+        },
+        fail: function fail(e) {
+          console.log(e);
         }
       });
     }

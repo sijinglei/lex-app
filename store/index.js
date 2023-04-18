@@ -1,18 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import user from './user.js'
+import com from './com.js'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	modules: {
-		user
+		user,
+		com
 	},
 	state: {
 		isIOS: true,
 		statusBar: 0,
 		customBar: 0,
 		systemInfo: null,
-		currentAddress: ''
+		currentAddress: '',
+		longAndLat: null, //经纬度
+		wxuserInfo: null
 	},
 	mutations: {
 		SET_STATUS_BAR(state, data) {
@@ -32,7 +36,13 @@ const store = new Vuex.Store({
 		},
 		SET_CURRENT_ADDRESS(state, data) {
 			state.currentAddress = data
-		}
+		},
+		SET_LONG_LAT(state, data) {
+			state.longAndLat = data
+		},
+		SET_WXUSER_INFO(state, data) {
+			state.wxuserInfo = data
+		},
 	}
 })
 export default store

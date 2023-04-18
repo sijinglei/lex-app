@@ -12,10 +12,11 @@ const $request = (url, data, method = 'POST', headers = "application/json;") => 
 			method: method,
 			data: data,
 			header: {
-				'Content-Type': headers
+				'Content-Type': headers,
+				'Authorization': uni.getStorageSync('token') || ''
 			},
 			success(res) {
-				resolve(res)
+				resolve(res.data)
 				uni.hideLoading(); //关闭loading
 			},
 			fail(error) {
@@ -35,7 +36,7 @@ const $get = (url, data) => {
 }
 //post请求
 const $post = (url, data) => {
-	return $request(url, data, 'POST','application/x-www-form-urlencoded')
+	return $request(url, data, 'POST', 'application/x-www-form-urlencoded')
 }
 //给uniapp原生的requset赋值
 //记得要在mian.js中引用

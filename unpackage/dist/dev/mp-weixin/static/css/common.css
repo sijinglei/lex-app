@@ -52,7 +52,9 @@
 	-webkit-transform: scaleY(0.5);
 	transform: scaleY(0.5);
 }
-
+.red{
+	color: #E93A3A;
+}
 button[type="save"] {
   margin-top: 68rpx;
   background: #ffd200;

@@ -5,10 +5,12 @@
     "uni-forms": "/uni_modules/uni-forms/components/uni-forms/uni-forms",
     "u-switch": "/uni_modules/uview-ui/components/u-switch/u-switch",
     "uni-forms-item": "/uni_modules/uni-forms/components/uni-forms-item/uni-forms-item",
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
     "uni-number-box": "/uni_modules/uni-number-box/components/uni-number-box/uni-number-box",
     "u-radio-group": "/uni_modules/uview-ui/components/u-radio-group/u-radio-group",
     "u-radio": "/uni_modules/uview-ui/components/u-radio/u-radio",
-    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons",
-    "uni-easyinput": "/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput"
+    "uni-easyinput": "/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput",
+    "u-popup": "/uni_modules/uview-ui/components/u-popup/u-popup",
+    "u-toast": "/uni_modules/uview-ui/components/u-toast/u-toast"
   }
 }

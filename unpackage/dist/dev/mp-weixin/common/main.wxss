@@ -72,6 +72,9 @@
 	-webkit-transform: scaleY(0.5);
 	transform: scaleY(0.5);
 }
+.red{
+	color: #E93A3A;
+}
 button[type="save"] {
   margin-top: 68rpx;
   background: #ffd200;
@@ -349,6 +352,111 @@ button[type="save"] {
   height: 0 !important;
   -webkit-appearance: none;
   background: transparent;
+}
+.popup-main {
+  height: 820rpx;
+  padding: 10rpx 0;
+}
+.popup-main .head {
+  display: flex;
+  height: 60rpx;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+}
+.popup-main .head view {
+  color: #333;
+  font-size: 24rpx;
+}
+.popup-main .head view:last-child {
+  color: #3c9cff;
+}
+.popup-main .content {
+  margin-top: 20rpx;
+}
+.popup-main .popup-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding: 10rpx 30rpx;
+}
+.popup-main .popup-box.checked {
+  background-color: #FFD200;
+}
+.popup-main .popup-box view {
+  font-size: 28rpx;
+}
+.popup-main .popup-box text {
+  font-size: 24rpx;
+  color: #333;
+  margin-top: 10rpx;
+}
+.popup-main .filter .top {
+  display: flex;
+  height: 88rpx;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #9E9E9E;
+  font-size: 36rpx;
+  font-weight: bold;
+  line-height: 50rpx;
+}
+.popup-main .filter .top .u-icon {
+  position: absolute;
+  right: 30rpx;
+  top: 24rpx;
+}
+.popup-main .filter .filter-box {
+  padding: 20rpx 30rpx;
+}
+.popup-main .filter .filter-box .name {
+  font-size: 36rpx;
+  color: #333;
+  font-weight: bold;
+  line-height: 50rpx;
+  margin-bottom: 36rpx;
+}
+.popup-main .filter .filter-box .attr {
+  display: flex;
+  justify-content: space-between;
+}
+.popup-main .filter .filter-box .attr .box {
+  width: calc(calc(100% - 100rpx) / 3);
+  height: 100rpx;
+  line-height: 100rpx;
+  border-radius: 12rpx;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+.popup-main .filter .btns {
+  position: absolute;
+  bottom: 54rpx;
+  left: 0;
+  width: 100%;
+  height: 98rpx;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30rpx;
+}
+.popup-main .filter .btns .btn {
+  color: #FFD200;
+  font-size: 36rpx;
+  line-height: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+.popup-main .filter .btns .btn.sure {
+  flex: auto;
+  width: 474rpx;
+  color: #333;
+  border-radius: 12rpx;
+  background-color: #FFD200;
 }
 page {
   --tc: #ffd200;

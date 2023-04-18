@@ -1,0 +1,2 @@
+<view class="success-page data-v-d77f41e4"><image class="state-img data-v-d77f41e4" src="../../static/image/done.png" mode="aspectFit"></image><view class="h1 data-v-d77f41e4">发布审核中，请耐心等待</view><text class="txt data-v-d77f41e4">审核通过后，系统将会立即通知您，
+		请保持电话畅通，微信可添加！</text><button data-event-opts="{{[['tap',[['toHome',['$event']]]]]}}" class="button data-v-d77f41e4" bindtap="__e">回到首页</button></view>

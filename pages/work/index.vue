@@ -31,7 +31,7 @@
 					</view>
 
 				</view>
-				<view class="right">
+				<view class="right" @click="openFilter">
 					筛选
 					<uni-icons type="bottom" size="20"></uni-icons>
 				</view>
@@ -42,6 +42,30 @@
 				</block>
 			</view>
 		</view>
+		<!-- 筛选 -->
+		<u-popup :show="showFilter" @close="closeFilter" :round="10" @open="openFilter">
+			<view class="popup-main">
+				<view class="content filter">
+					<view class="top">
+						筛选
+						<u-icon name="close-circle-fill" color="#999" size="36"></u-icon>
+					</view>
+					<view class="filter-box">
+						<view class="name">性别</view>
+						<view class="attr">
+							<view class="box">男</view>
+							<view class="box">女</view>
+							<view class="box">未知</view>
+						</view>
+					</view>
+					
+					<view class="btns">
+						<view class="btn">重置</view>
+						<view class="btn sure">确定</view>
+					</view>
+				</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -60,21 +84,40 @@
 		},
 		data() {
 			return {
+				showFilter: false,
 				keywords: "", //搜索关键字
 				currentId: 1,
 				filters: [{
 						id: 1,
-						text: '推荐'
+						text: '推荐',
+						api: 'user/recommend',
+						queryParams: {
+							areaId: ''
+						}
 					},
 					{
 						id: 2,
-						text: '附近'
+						text: '附近',
+						api: 'user/nearby',
+						queryParams: {
+							areaId: '',
+							latitude: '',
+							longitude: ''
+						}
 					},
 					{
 						id: 3,
-						text: '急招'
+						text: '急招',
+						api: 'user/urgent',
+						queryParams: {
+							areaId: ''
+						}
 					}
 				],
+				pageParams: {
+					page: 1,
+					pageSize: 30
+				},
 				startX: 0,
 				isLeft: true,
 				animation: null,
@@ -95,13 +138,11 @@
 			})
 
 			// 生生模拟数据
-			that.rowData = this.initData(20)
-			console.log(this.list)
+			// that.rowData = this.initData(20)
+			// console.log(this.list)
 			this.getList()
 		},
-		onShow() {
-			console.log('page Show')
-		},
+		onShow() {},
 		onHide() {
 			console.log('page Hide')
 		},
@@ -109,6 +150,12 @@
 			...mapActions({
 				login: 'user/login'
 			}),
+			openFilter() {
+				this.showFilter = true
+			},
+			closeFilter() {
+				this.showFilter = false
+			},
 			onPullDownRefresh() {
 				uni.stopPullDownRefresh();
 			},
@@ -192,7 +239,27 @@
 			},
 			getList() {
 				this.isloading = true
-				this.list = this.rowData.filter(d => d.type == this.currentId)
+				let {
+					queryParams,
+					api
+				} = this.filters.find(d => d.id == this.currentId)
+				queryParams.areaId = '' // 获取当前区域id
+				if (this.currentId == 2) { // 附近特殊处理
+					let {
+						longitude,
+						latitude
+					} = this.$store.state.longAndLat
+					queryParams.latitude = latitude
+					queryParams.longitude = longitude
+				}
+				let query = {
+					...queryParams,
+					...this.pageParams
+				}
+				this.$store.dispatch(api, query).then(res => {
+					console.log('list===', res)
+				})
+				// this.list = this.rowData.filter(d => d.type == this.currentId)
 				this.isloading = false
 			},
 			onReachBottom() {
@@ -214,7 +281,7 @@
 			},
 			toAddress() {
 				uni.navigateTo({
-					url:'/pages/chooseAddress/chooseAddress?address='+'南山区'
+					url: '/pages/chooseAddress/chooseAddress?address=' + '南山区'
 				})
 			},
 			clickLogin() {

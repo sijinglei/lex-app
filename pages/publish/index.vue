@@ -18,7 +18,7 @@
 				<uni-icons type="arrow-right" color="#FFD200" size="40"></uni-icons>
 			</view>
 		</view>
-		<view class="list-box">
+<!-- 		<view class="list-box">
 			<view class="left">
 				<view class="title">委托发布</view>
 				<text>您周围有 2813 人等待工作</text>
@@ -26,8 +26,8 @@
 			<view class="arrow">
 				<uni-icons type="arrow-right" color="#FFD200" size="40"></uni-icons>
 			</view>
-		</view>
-		<view class="list-box">
+		</view> -->
+<!-- 		<view class="list-box">
 			<view class="left">
 				<view class="title">已委托</view>
 				<text>您周围有 2813 人等待工作</text>
@@ -35,7 +35,7 @@
 			<view class="arrow success">
 				<uni-icons type="checkmarkempty" color="#fff" size="40"></uni-icons>
 			</view>
-		</view>
+		</view> -->
 		<view class="list-box">
 			<view class="left">
 				<view class="title">发布审批</view>

@@ -1,13 +1,39 @@
 <script>
 	import env from './utils/env.js'
 	import http from './utils/http.js'
+	import utils from './utils/utils.js'
+	import QQMapWX from './common/qqmap-wx-jssdk.min.js'
 	export default {
+		data() {
+			return {
+				isIos: false,
+				hasLocation: false,
+				location: {}
+			}
+		},
 		onLaunch: function() {
 			this.getSysInfo()
 			this.getCurrentLocation()
+			let token = uni.getStorageSync('token') || ''
+			let userInfo = uni.getStorageSync('user') || null
+			console.log('token', token, userInfo)
+			let isLogin = token && userInfo
+			console.log('isLogin', isLogin)
+			if (!isLogin) {
+				// #ifdef APP-PLUS
+				uni.navigateTo({
+					url: '/pages/register/register'
+				})
+				// #endif
+
+				// #ifdef MP-WEIXIN
+				this.login()
+				// #endif
+			}
 		},
 		onShow: function() {
 			console.log('App Show')
+
 		},
 		onHide: function() {
 			console.log('App Hide')
@@ -51,42 +77,142 @@
 						this.$store.commit('SET_STATUS_BAR', statusBar)
 						this.$store.commit('SET_CUSTOM_BAR', customBar)
 						this.$store.commit('SET_SYSTEM_INFO', e)
-
+						let locationEnabled = e.locationEnabled; //判断手机定位服务是否开启
+						let locationAuthorized = e.locationAuthorized; //判断定位服务是否允许微信授权
+						if (!locationEnabled || !locationAuthorized) {
+							//手机定位服务（GPS）未授权
+							uni.showToast({
+								title: "请打开手机GPS",
+								icon: "none",
+							});
+							return
+						}
 					},
 				});
 			},
 			// 通过自带的方法获取到当前的经纬度，调用方法获取到地址获取到地址的中文信息
-			getCurrentLocation() {
-				let that = this //在uniapp中药定义一下this才能使用
-				let positionInfo = {}
-				// uni.chooseLocation({
-				// 	success:function(res){
-				// 		console.log(res)
-				// 	}
-				// })
-				// uni.getLocation({
-				// 	type: 'wgs84',
-				// 	success: function(res) {
-				// 		console.log(res)
-				// 		positionInfo.longitude = res.longitude;
-				// 		positionInfo.latitude = res.latitude;
-				// 		that.loAcquire(positionInfo.longitude, positionInfo.latitude)
-				// 	}
-				// });
+			async getCurrentLocation() {
+				const position = await this.getLocationInfo();
+				this.$store.commit('SET_LONG_LAT', {
+					longitude: position.longitude,
+					latitude: position.latitude
+				})
+				this.$store.commit('SET_CURRENT_ADDRESS', position.area)
+
 			},
-			loAcquire(longitude, latitude) {
+			//获取位置信息
+			async getLocationInfo() {
 				let that = this;
-				uni.showLoading({
-					title: '获取位置中',
-					mask: true
+				let sys = uni.getSystemInfoSync()
+				let isIos = sys.platform == 'ios';
+				return new Promise((resolve) => {
+					//位置信息默认数据
+					let location = {
+						longitude: 0,
+						latitude: 0,
+						province: "",
+						city: "",
+						area: "",
+						street: "",
+						address: "",
+					};
+					uni.getLocation({
+						type: 'wgs84', //"gcj02",
+						// #ifdef APP
+						geocode: true,
+						// #endif
+						success(res) {
+							location.longitude = res.longitude;
+							location.latitude = res.latitude;
+							if (isIos) {
+								location.longitude = res.longitude.toFixed(6);
+								location.latitude = res.latitude.toFixed(6);
+							}
+
+							// 腾讯地图Api
+							const qqmapsdk = new QQMapWX({
+								key: env.mapKey //这里填写自己申请的key
+							});
+							qqmapsdk.reverseGeocoder({
+								location,
+								success(response) {
+									let info = response.result;
+									console.log(info);
+									location.province = info.address_component.province;
+									location.city = info.address_component.city;
+									location.area = info.address_component.district;
+									location.street = info.address_component.street;
+									location.address = info.address;
+									resolve(location);
+								},
+							});
+						},
+						fail(err) {
+							console.log(err)
+							resolve(location);
+						},
+					});
 				});
-				let str = `output=jsonp&key=${env.mapKey}=${latitude},${longitude}` //记得在这里要输入密钥哦！
-				http.get('https://apis.map.qq.com/ws/geocoder/v1/?' + str, {}).then(res => {
-					console.log(res);
-					uni.hideLoading();
-					if (res.status == 0) {
-						// that.positionInfo.address = '当前位置是:' + res.result.address_component.street_number; //当前定位
-						that.$store.commit('SET_CURRENT_ADDRESS', res.result.address_component.street_number)
+			},
+			// getAreaCode通过经纬度(wgs84)坐标获取区域码
+			getAreaCode(latitude, longitude) {
+				let that = this;
+				that.$u.api
+					.getAreaCode({
+						latitude: latitude,
+						longitude: longitude,
+					})
+					.then((res) => {
+						if (res.code == 200) {
+							console.log("通过经纬度坐标获取区域码:", res);
+							// console.log(res, 'areaCode');
+							that.bindList.areaCode = res.data.areaCode;
+							that.bindList.specificAddress = res.data.detailLocation;
+							that.bindList.address = res.data.areaLocation;
+						} else {
+							uni.showToast({
+								title: res.msg,
+								icon: "none"
+							});
+						}
+					})
+					.catch((err) => {
+						that.loadState = "加载失败err";
+						console.log("getDevList_err:", err); //--------------------
+					});
+			},
+			login() {
+				let that = this
+				console.log('login')
+				uni.login({
+					provider: 'weixin',
+					success: function(res) {
+						let openCode = res.code
+						uni.getUserInfo({
+							provider: 'weixin',
+							success: function(user) {
+								let userInfo = user.userInfo
+								console.log(userInfo)
+								that.$store.commit('SET_WXUSER_INFO', userInfo)
+								that.$store.dispatch('user/loginWx', {
+									code: openCode
+								}).then(logRes => {
+									console.log('是否登录', logRes)
+									if (logRes.code == 100) {
+										uni.navigateTo({
+											url: '/pages/login/login'
+										})
+									} else {
+										uni.navigateTo({
+											url: '/pages/work/index'
+										})
+									}
+								})
+							}
+						})
+					},
+					fail(e) {
+						console.log(e)
 					}
 				})
 			}
@@ -94,8 +220,9 @@
 	}
 </script>
 <style lang="scss">
-	@import "@/uni_modules/uview-ui/index.scss";
 	@import '/static/css/common.css';
+	@import "@/uni_modules/uview-ui/index.scss";
+	@import './common/css/common.scss';
 
 	page {
 		--tc: #ffd200;

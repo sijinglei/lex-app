@@ -11,7 +11,8 @@
     "pages/release/release",
     "pages/releaseService/releaseService",
     "pages/login/login",
-    "pages/register/register"
+    "pages/register/register",
+    "pages/success/success"
   ],
   "subPackages": [],
   "window": {
@@ -60,9 +61,14 @@
   },
   "permission": {
     "scope.userLocation": {
-      "desc": "开发需要"
+      "desc": "乐享零工需要获取您的位置，以便给您推荐更合适的工作岗位！"
     }
   },
+  "requiredPrivateInfos": [
+    "chooseLocation",
+    "getLocation",
+    "chooseLocation"
+  ],
   "usingComponents": {
     "no-data": "/components/noData/noData"
   }

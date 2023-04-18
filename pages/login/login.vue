@@ -1,73 +1,88 @@
 <template>
 	<view class="form-main">
-		<image class="logo" src="../../static/image/logo.jpg" mode="aspectFit"></image>
-		<view class="form-group line05">
-			<input name="phone" type="number" v-model="phone" placeholder="请输入您的手机号码" />
-		</view>
-		<view class="form-group line05">
-			<input name="code" id="codeField" type="number" v-model="code" placeholder="请输入短信验证码" />
-			<text class="yzm" v-if="isShowYan" @click="getSmsCode">获取验证码</text>
-			<text class="yzm" v-else>{{countTime}}S</text>
-		</view>
-		<button type="save">登录</button>
-		<u-toast ref="uToast"></u-toast>
+		<form @submit="login">
+			<image class="logo" src="../../static/image/logo.jpg" mode="aspectFit"></image>
+			<view class="form-group line05">
+				<input name="mobile" type="number" focus maxlength="11" 
+					placeholder="请输入您的手机号码" />
+			</view>
+			<view class="form-group line05">
+				<input name="password" password type="text"  placeholder="请输入您的登录密码" />
+			</view>
+
+			<!-- 	<view class="uni-form-item uni-column">
+				<view class="uni-input-wrapper">
+					<input class="uni-input" placeholder="请输入您的登录密码" :password="showPassword" />
+					<text class="uni-icon" :class="[!showPassword ? 'uni-eye-active' : '']"
+						@click="changePassword">&#xe568;</text>
+				</view>
+			</view> -->
+
+			<button type="save" form-type="submit">登录</button>
+			<button type="save" @click="register">去注册</button>
+			<u-toast ref="uToast"></u-toast>
+		</form>
 	</view>
 </template>
 
 <script>
-	import {
-		mapActions
-	} from 'vuex'
 	export default {
 		data() {
 			return {
-				isShowYan: true,
-				phone: '',
-				code: '',
-				countTime: 60
+				formData: {
+					mobile: '',
+					password: '',
+				},
+				showPassword: true
 			};
 		},
 		methods: {
-			...mapActions({
-				smsCode: 'user/getSmsCode'
-			}),
+			changePassword: function() {
+				this.showPassword = !this.showPassword;
+			},
 			showToast(message) {
 				this.$refs.uToast.show({
 					message
 				})
 			},
 			validData() {
-				if (this.phone == '') {
+				console.log('this.formData', this.formData)
+				if (this.formData.mobile == '') {
 					this.showToast('手机号码不能为空')
 					return false
 				}
-				if (!/^1[3456789]\d{9}$/.test(this.phone)) {
+				if (!/^1[3456789]\d{9}$/.test(this.formData.mobile)) {
 					this.showToast('手机号码格式错误');
 					return false;
 				}
+				if (this.formData.password == '') {
+					this.showToast('密码不能为空')
+					return false
+				}
 				return true
 			},
-			getSmsCode(e) {
+
+			login(e) {
+				// const formdata = e.detail.value
+				// console.log('formdata', formdata)
+				this.formData = e.detail.value
+				console.log(this.formData)
 				if (!this.validData()) return
-				this.smsCode({
-					mobile: this.phone
-				}).then(res => {
-					console.log('验证码', res)
-					this.startCountdown()
-					this.isShowYan = false
-				}).catch(err => {})
-
-
-			},
-			startCountdown() {
-				let time = 59
-				let timer = setInterval(() => {
-					this.countTime = time--
-					if (time == 0) {
-						clearInterval(timer)
-						this.isShowYan = true
+				this.$store.dispatch('user/login', this.formData).then(res => {
+					console.log('de==', res)
+					if (res.code == 0) {
+						uni.switchTab({
+							url: '/pages/work/index'
+						})
+					} else {
+						this.showToast(res.msg)
 					}
-				}, 1000)
+				})
+			},
+			register() {
+				uni.navigateTo({
+					url: '/pages/register/register'
+				})
 			}
 		}
 	}

@@ -101,7 +101,13 @@ var components
 try {
   components = {
     uniIcons: function () {
-      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 248))
+      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 264))
+    },
+    uPopup: function () {
+      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-popup/u-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-popup/u-popup")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-popup/u-popup.vue */ 419))
+    },
+    uIcon: function () {
+      return Promise.all(/*! import() | uni_modules/uview-ui/components/u-icon/u-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uview-ui/components/u-icon/u-icon")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-icon/u-icon.vue */ 352))
     },
   }
 } catch (e) {
@@ -172,7 +178,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 var comItem = function comItem() {
   __webpack_require__.e(/*! require.ensure | components/comItem */ "components/comItem").then((function () {
-    return resolve(__webpack_require__(/*! @/components/comItem.vue */ 256));
+    return resolve(__webpack_require__(/*! @/components/comItem.vue */ 272));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _default = {
@@ -182,19 +188,38 @@ var _default = {
   computed: _objectSpread({}, (0, _vuex.mapState)(['statusBar', 'customBar', 'currentAddress'])),
   data: function data() {
     return {
+      showFilter: false,
       keywords: "",
       //搜索关键字
       currentId: 1,
       filters: [{
         id: 1,
-        text: '推荐'
+        text: '推荐',
+        api: 'user/recommend',
+        queryParams: {
+          areaId: ''
+        }
       }, {
         id: 2,
-        text: '附近'
+        text: '附近',
+        api: 'user/nearby',
+        queryParams: {
+          areaId: '',
+          latitude: '',
+          longitude: ''
+        }
       }, {
         id: 3,
-        text: '急招'
+        text: '急招',
+        api: 'user/urgent',
+        queryParams: {
+          areaId: ''
+        }
       }],
+      pageParams: {
+        page: 1,
+        pageSize: 30
+      },
       startX: 0,
       isLeft: true,
       animation: null,
@@ -215,19 +240,23 @@ var _default = {
     });
 
     // 生生模拟数据
-    that.rowData = this.initData(20);
-    console.log(this.list);
+    // that.rowData = this.initData(20)
+    // console.log(this.list)
     this.getList();
   },
-  onShow: function onShow() {
-    console.log('page Show');
-  },
+  onShow: function onShow() {},
   onHide: function onHide() {
     console.log('page Hide');
   },
   methods: _objectSpread(_objectSpread({}, (0, _vuex.mapActions)({
     login: 'user/login'
   })), {}, {
+    openFilter: function openFilter() {
+      this.showFilter = true;
+    },
+    closeFilter: function closeFilter() {
+      this.showFilter = false;
+    },
     onPullDownRefresh: function onPullDownRefresh() {
       uni.stopPullDownRefresh();
     },
@@ -304,9 +333,25 @@ var _default = {
     getList: function getList() {
       var _this2 = this;
       this.isloading = true;
-      this.list = this.rowData.filter(function (d) {
-        return d.type == _this2.currentId;
+      var _this$filters$find = this.filters.find(function (d) {
+          return d.id == _this2.currentId;
+        }),
+        queryParams = _this$filters$find.queryParams,
+        api = _this$filters$find.api;
+      queryParams.areaId = ''; // 获取当前区域id
+      if (this.currentId == 2) {
+        // 附近特殊处理
+        var _this$$store$state$lo = this.$store.state.longAndLat,
+          longitude = _this$$store$state$lo.longitude,
+          latitude = _this$$store$state$lo.latitude;
+        queryParams.latitude = latitude;
+        queryParams.longitude = longitude;
+      }
+      var query = _objectSpread(_objectSpread({}, queryParams), this.pageParams);
+      this.$store.dispatch(api, query).then(function (res) {
+        console.log('list===', res);
       });
+      // this.list = this.rowData.filter(d => d.type == this.currentId)
       this.isloading = false;
     },
     onReachBottom: function onReachBottom() {

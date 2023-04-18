@@ -101,16 +101,19 @@ var components
 try {
   components = {
     uniForms: function () {
-      return Promise.all(/*! import() | uni_modules/uni-forms/components/uni-forms/uni-forms */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-forms/components/uni-forms/uni-forms")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-forms/components/uni-forms/uni-forms.vue */ 263))
+      return Promise.all(/*! import() | uni_modules/uni-forms/components/uni-forms/uni-forms */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-forms/components/uni-forms/uni-forms")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-forms/components/uni-forms/uni-forms.vue */ 279))
     },
     uniEasyinput: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput */ "uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue */ 314))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput */ "uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput.vue */ 330))
     },
     uniFormsItem: function () {
-      return Promise.all(/*! import() | uni_modules/uni-forms/components/uni-forms-item/uni-forms-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-forms/components/uni-forms-item/uni-forms-item")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-forms/components/uni-forms-item/uni-forms-item.vue */ 284))
+      return Promise.all(/*! import() | uni_modules/uni-forms/components/uni-forms-item/uni-forms-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-forms/components/uni-forms-item/uni-forms-item")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-forms/components/uni-forms-item/uni-forms-item.vue */ 300))
     },
     uniIcons: function () {
-      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 248))
+      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 264))
+    },
+    uToast: function () {
+      return __webpack_require__.e(/*! import() | uni_modules/uview-ui/components/u-toast/u-toast */ "uni_modules/uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uni_modules/uview-ui/components/u-toast/u-toast.vue */ 337))
     },
   }
 } catch (e) {
@@ -245,67 +248,23 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var _default = {
   data: function data() {
     return {
       formData: {
-        isJobHot: true,
-        jobType: 1,
-        age: 0,
-        sex: 0,
-        jobPerson: 1,
-        settleMethod: 1,
+        id: '',
         title: '',
-        jobContent: '',
-        jobTime: '',
-        address: '',
-        detailAddress: '',
-        salaryDesc: '',
-        benefitDesc: '',
+        content: '',
+        serviceTime: '',
         mobile: '',
-        wechat: '',
-        remark: '' // 其他
+        weixin: '',
+        address: '',
+        longitude: '',
+        // 经度
+        latitude: '' //纬度
       },
 
-      rules: {
-        age: {
-          rules: [{
-            required: true,
-            errorMessage: '请输入年龄'
-          }, {
-            validateFunction: function validateFunction(rule, value, data, callback) {
-              // 异步需要返回 Promise 对象
-              return new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                  if (value > 10) {
-                    // 通过返回 resolve
-                    resolve();
-                  } else {
-                    // 不通过返回 reject(new Error('错误信息'))
-                    reject(new Error('年龄必须大于十岁'));
-                  }
-                }, 2000);
-              });
-            }
-          }]
-        },
-        email: {
-          rules: [{
-            format: 'email',
-            errorMessage: '请输入正确的邮箱地址'
-          }]
-        }
-      }
+      currentChooseAddr: ''
     };
   },
   onReady: function onReady() {
@@ -319,19 +278,75 @@ var _default = {
     change: function change(e) {
       console.log('change', e);
     },
+    chooseAddr: function chooseAddr() {
+      var that = this;
+      uni.chooseLocation({
+        success: function success(res) {
+          console.log('位置名称：' + res.name);
+          console.log('详细地址：' + res.address);
+          console.log('纬度：' + res.latitude);
+          console.log('经度：' + res.longitude);
+          that.currentChooseAddr = res.address;
+          that.formData.longitude = res.longitude;
+          that.formData.latitude = res.latitude;
+          that.formData.address = res.name;
+        }
+      });
+    },
+    showToast: function showToast(message) {
+      this.$refs.uToast.show({
+        message: message
+      });
+    },
+    validData: function validData() {
+      if (this.formData.title == '') {
+        this.showToast('标题不能为空');
+        return false;
+      }
+      if (this.formData.content == '') {
+        this.showToast('请填写服务内容');
+        return false;
+      }
+      if (this.formData.serviceTime == '') {
+        this.showToast('请填写服务时间');
+        return false;
+      }
+      if (this.formData.longitude == '' || this.formData.latitude == '') {
+        this.showToast('请选择服务位置');
+        return false;
+      }
+      if (this.formData.address == '') {
+        this.showToast('请填写具体位置');
+        return false;
+      }
+      if (this.formData.mobile == '') {
+        this.showToast('手机号码不能为空');
+        return false;
+      }
+      if (!/^1[3456789]\d{9}$/.test(this.formData.mobile)) {
+        this.showToast('手机号码格式错误');
+        return false;
+      }
+      return true;
+    },
     /**
      * 表单提交
      * @param {Object} event
      */
     submit: function submit() {
+      var _this = this;
+      if (!this.validData()) return;
       uni.showLoading();
-      this.$refs.form.validate().then(function (res) {
-        uni.hideLoading();
-        console.log('表单数据信息：', res);
-      }).catch(function (err) {
-        uni.hideLoading();
-        console.log('表单错误信息：', err);
+      this.$store.dispatch('user/addService', this.formData).then(function (res) {
+        console.log(res);
+        if (res.code == 0) {
+          _this.showToast(_this.formData.id ? '发布成功！' : '更新成功');
+          uni.navigateTo({
+            url: '/pages/success/success'
+          });
+        }
       });
+      uni.hideLoading();
     }
   }
 };
