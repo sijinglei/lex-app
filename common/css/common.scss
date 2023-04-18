@@ -67,6 +67,7 @@
 				.attr{
 					display: flex;
 					justify-content: space-between;
+					flex-wrap: wrap;
 					.box{
 						width: calc(calc(100% - 100rpx) / 3);
 						height: 100rpx;
@@ -76,6 +77,9 @@
 						box-sizing: border-box;
 						text-align: center;
 						margin-bottom: 30rpx;
+						&.checked{
+							background-color: #FFD200;
+						}
 					}
 				}
 			}

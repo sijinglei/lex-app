@@ -421,6 +421,7 @@ button[type="save"] {
 .popup-main .filter .filter-box .attr {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .popup-main .filter .filter-box .attr .box {
   width: calc(calc(100% - 100rpx) / 3);
@@ -431,6 +432,9 @@ button[type="save"] {
   box-sizing: border-box;
   text-align: center;
   margin-bottom: 30rpx;
+}
+.popup-main .filter .filter-box .attr .box.checked {
+  background-color: #FFD200;
 }
 .popup-main .filter .btns {
   position: absolute;

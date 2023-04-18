@@ -216,6 +216,23 @@ var _default = {
           areaId: ''
         }
       }],
+      settlementMethods: [{
+        name: '日结',
+        value: 1,
+        checked: false
+      }, {
+        name: '周结',
+        value: 2,
+        checked: false
+      }, {
+        name: '月结',
+        value: 3,
+        checked: false
+      }, {
+        name: '完工结',
+        value: 4,
+        checked: false
+      }],
       pageParams: {
         page: 1,
         pageSize: 30
@@ -256,6 +273,11 @@ var _default = {
     },
     closeFilter: function closeFilter() {
       this.showFilter = false;
+    },
+    checkSettle: function checkSettle(item) {
+      this.settlementMethods.forEach(function (d) {
+        d.checked = d.value == item.value;
+      });
     },
     onPullDownRefresh: function onPullDownRefresh() {
       uni.stopPullDownRefresh();

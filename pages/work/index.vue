@@ -48,7 +48,7 @@
 				<view class="content filter">
 					<view class="top">
 						筛选
-						<u-icon name="close-circle-fill" color="#999" size="36"></u-icon>
+						<u-icon name="close-circle-fill" color="#999" size="40"  @click="closeFilter"></u-icon>
 					</view>
 					<view class="filter-box">
 						<view class="name">性别</view>
@@ -58,10 +58,16 @@
 							<view class="box">未知</view>
 						</view>
 					</view>
-					
+					<view class="filter-box">
+						<view class="name">结算方式</view>
+						<view class="attr">
+							<view class="box" :class="{checked:d.checked}" v-for="d in settlementMethods" :key="d.value"
+								@click="checkSettle(d)">{{d.name}}</view>
+						</view>
+					</view>
 					<view class="btns">
-						<view class="btn">重置</view>
-						<view class="btn sure">确定</view>
+						<view class="btn" @click="closeFilter">重置</view>
+						<view class="btn sure"  @click="closeFilter">确定</view>
 					</view>
 				</view>
 			</view>
@@ -114,6 +120,27 @@
 						}
 					}
 				],
+				settlementMethods: [{
+						name: '日结',
+						value: 1,
+						checked: false
+					},
+					{
+						name: '周结',
+						value: 2,
+						checked: false
+					},
+					{
+						name: '月结',
+						value: 3,
+						checked: false
+					},
+					{
+						name: '完工结',
+						value: 4,
+						checked: false
+					}
+				],
 				pageParams: {
 					page: 1,
 					pageSize: 30
@@ -155,6 +182,11 @@
 			},
 			closeFilter() {
 				this.showFilter = false
+			},
+			checkSettle(item) {
+				this.settlementMethods.forEach(d => {
+					d.checked = d.value == item.value
+				})
 			},
 			onPullDownRefresh() {
 				uni.stopPullDownRefresh();
